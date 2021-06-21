@@ -1,2 +1,2 @@
-# qml-exercise
-Build simple app using Qt
+# QML-exercise
+build simple desktop app using qml
