@@ -24,40 +24,6 @@ Item {
         actions.getAllProjects()
     }
 
-    Popup{
-        id: confirmationPopup
-        padding: 20
-        modal: true
-        focus: true
-        anchors.centerIn: parent
-        property alias message:confirmationPopupMessage.text
-
-        Column{
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            Label{
-                id: confirmationPopupMessage
-
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            Rectangle{
-                width:10
-                height:10
-            }
-
-            Button{
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "Ok"
-                onClicked: {
-                    confirmationPopup.close()
-                }
-
-            }
-        }
-    }
-
 
     ProjectDetailDAO{
         id: projectDetailDAO
@@ -70,7 +36,6 @@ Item {
         signal folderPathIsChosen(string selectedDirPath)
         signal projectDirIndexSelected(int currIndex)
         signal saveClicked()
-        signal showAlert(string message)
         signal getAllProjects()
         signal clearAllProjects()
         signal executeAll()
@@ -82,8 +47,8 @@ Item {
             states.selectedIndex = currIndex
         }
         onAddProjectListAndCommand: {
-            states.projectListModel.append({projectDir:"", projectInitCommand:""})
-
+            const uuid = globalStates.selectedProjectUuid
+            states.projectListModel.append({projectDir:"", projectInitCommand:"", uuid })
         }
         onFolderPathIsChosen: {
             const targetRow = states.projectListModel.get(states.selectedIndex)
@@ -91,23 +56,22 @@ Item {
             states.projectListModel.set(states.selectedIndex, targetRow)
         }
         onSaveClicked: {
-            projectDetailDAO.clearProjectList()
+            const uuid = globalStates.selectedProjectUuid
+            projectDetailDAO.clearProjectList(uuid)
             const {success, error} = projectDetailDAO.saveProjectList(states.projectListModel)
 
             if(error){
-                actions.showAlert(error);
+                globalActions.showAlert(error);
             } else {
-                actions.showAlert("Project datail is successfully saved.")
+                globalActions.showAlert("Project datail is successfully saved.")
             }
         }
-        onShowAlert: {
-            confirmationPopup.message = message
-            confirmationPopup.open()
-        }
+
         onGetAllProjects: {
-            const {result: projectList, err} = projectDetailDAO.getProjectList()
+            const uuid = globalStates.selectedProjectUuid
+            const {result: projectList, err} = projectDetailDAO.getProjectList(uuid)
             if(err){
-                actions.showAlert(error);
+                globalActions.showAlert(err);
             } else {
                 states.projectListModel.clear()
                 const length = projectList.length;
@@ -173,7 +137,6 @@ Item {
         anchors.top: parent.top
         spacing: 10
 
-
         Rectangle {
             id: dummy
             width: 200
@@ -223,10 +186,10 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
 
             ListView{
+                id: projectDirCommandListView
                 focus: true
                 clip:true
-                spacing:10
-                id: projectDirCommandListView
+                spacing: 10
                 visible: true
                 model: states.projectListModel
                 delegate: projectDirRowDelegate
@@ -281,13 +244,13 @@ Item {
 
                 Button{
                     id: deleteButton
-                    text: "-"
+                    text: "del"
                     width: 40
                     onClicked: {
                         try{
                             actions.removeAtIndex(index)
                         } catch(err){
-                            actions.showAlert(err)
+                            globalActions.showAlert(err)
                         }
                     }
                 }

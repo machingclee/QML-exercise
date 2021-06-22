@@ -13,18 +13,20 @@ Item {
                                                  dbVersion,
                                                  dbDescription,
                                                  dbEstimatedSize)
-        db.transaction(tx=>tx.executeSql('CREATE TABLE IF NOT EXISTS ProjectList(projectDir TEXT, projectInitCommand TEXT)'))
+        db.transaction(tx=>tx.executeSql(
+                           'CREATE TABLE IF NOT EXISTS ProjectDetailList(projectDir TEXT, projectInitCommand TEXT, uuid TEXT)'
+                           ))
         return db
     }
 
 
-    function getProjectList(){
+    function getProjectList(uuid){
         const resultJson = []
         try{
             const db = root.getDb()
             db.transaction(function(tx){
 
-                const result = tx.executeSql('SELECT * FROM ProjectList');
+                const result = tx.executeSql('SELECT * FROM ProjectDetailList AS pl WHERE pl.uuid='+"'"+uuid+"'");
                 const rows = result.rows
                 for(var i=0; i<rows.length; i++){
                     const {projectDir, projectInitCommand} = rows.item(i)
@@ -43,8 +45,8 @@ Item {
             const db = root.getDb()
             db.transaction(function(tx){
                 for (var i=0;i< projectListModel.count; i++){
-                    const { projectDir, projectInitCommand } = projectListModel.get(i)
-                    tx.executeSql('INSERT INTO ProjectList VALUES(?, ?)', [projectDir, projectInitCommand]);
+                    const { projectDir, projectInitCommand, uuid } = projectListModel.get(i)
+                    tx.executeSql('INSERT INTO ProjectDetailList VALUES(?, ?, ?)', [projectDir, projectInitCommand, uuid]);
                 }
             })
 
@@ -55,11 +57,11 @@ Item {
         }
     }
 
-    function clearProjectList(){
+    function clearProjectList(uuid){
         const db = root.getDb()
         try{
             db.transaction(function(tx){
-                tx.executeSql('DELETE FROM ProjectList')
+                tx.executeSql('DELETE FROM ProjectDetailList AS pld WHERE pld.uuid='+"'"+uuid+"'")
             })
             return { success: true }
         }catch(err){
