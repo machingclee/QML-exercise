@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.15.0, 2021-06-21T16:51:55. -->
+<!-- Written by QtCreator 4.15.0, 2021-06-21T23:31:13. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -294,8 +294,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/user/Repos/C++/Qt/2021-06-21-cpp-integration-2/cpp-integration-2/cpp-integration-2.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/user/Repos/C++/Qt/2021-06-21-cpp-integration-2/cpp-integration-2/cpp-integration-2.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">cpp-integration-22</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/user/Repos/C++/qml-exercise/2021-06-21-cpp-integration-2/cpp-integration-2/cpp-integration-2.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/user/Repos/C++/qml-exercise/2021-06-21-cpp-integration-2/cpp-integration-2/cpp-integration-2.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
